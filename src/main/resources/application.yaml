@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: spring-ollama
+  ai:
+    ollama:
+      base-url: http://192.168.1.145:11434
+      chat:
+        options:
+          model: qwen3:4b
+      embedding:
+        enabled: true
+        options:
+          model: rjmalagon/gte-qwen2-1.5b-instruct-embed-f16
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1536
+        max-document-batch-size: 10000 # Optional: Maximum number of documents per batch
+  datasource:
+    url: jdbc:postgresql://192.168.1.145:5433/bct
+    username: postgres
+    password: postgres
+server:
+  port: 8081
