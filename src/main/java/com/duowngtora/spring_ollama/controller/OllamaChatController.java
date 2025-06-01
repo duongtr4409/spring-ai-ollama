@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/ollama-chat")
+@RequestMapping("/api/v1/ollama-chat")
 public class OllamaChatController {
 
     private final ChatModel chatModel;
