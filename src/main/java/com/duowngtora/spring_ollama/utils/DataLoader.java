@@ -31,7 +31,7 @@ public class DataLoader {
         this.jdbcClient = jdbcClient;
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
 
         Integer count = jdbcClient.sql("select count(1) from vector_store ")
