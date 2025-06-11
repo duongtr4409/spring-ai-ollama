@@ -6,10 +6,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +19,10 @@ public class OllamaChatController {
 
     private final ChatModel chatModel;
     private final VectorStore vectorStore;
+
+    private String prompt_vietnamese = """
+            =Bạn là trợ lý trả lời thông tin sản phẩm. Bạn có công cụ RAG sử dụng vectorstore để truy vấn dữ liệu phi cấu trúc về thông tin tài liệu, hướng dẫn, trả lời các nội dung học tập. \\nYêu cầu:\\n1. Tất cả câu trả lời của bạn phải được trả lời hoàn toàn bằng tiếng Việt.\\n2. ưu tiên lấy dữ liệu trong vectorstore, nếu không có bạn có thể lấy thông tin từ tri thức của bạn.\\n3. Trả lời một cách đầy đủ và hữu ích vì bạn là một trợ lý.\\n4. Trả lời người dùng với phong thái thân tiện, ân cần giúp đỡ như một trợ lý chăm sóc khách hàng.
+            """;
 
     private String prompt = """
             Your task is to answer the questions and answers by vietnamese. Use the information from the DOCUMENTS
@@ -41,13 +42,13 @@ public class OllamaChatController {
         this.vectorStore = vectorStore;
     }
 
-    @GetMapping("/chat")
-    public ResponseEntity<String> chat(@RequestParam String message) {
+    @PostMapping("/chat")
+    public ResponseEntity<String> chat(@RequestBody String message) {
         return ResponseEntity.ok(chatModel.call(message));
     }
 
-    @GetMapping("/prompt")
-    public ResponseEntity<String> prompt(@RequestParam String message) {
+    @PostMapping("/prompt")
+    public ResponseEntity<String> prompt(@RequestBody String message) {
         PromptTemplate promptTemplate = new PromptTemplate(prompt);
 
         Map<String, Object> params = new HashMap<>();
